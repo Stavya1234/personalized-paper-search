@@ -1,18 +1,31 @@
 from fastapi import FastAPI
 
-from backend.app.search.hybrid_search import hybrid_search
+from backend.app.search.hybrid_search import (
+    hybrid_search
+)
 
-app = FastAPI()
+from backend.app.api.schemas import (
+    SearchResponse
+)
+
+app = FastAPI(
+    title="Personalized Paper Search API"
+)
 
 
 @app.get("/")
 def root():
+
     return {
-        "message": "Personalized Paper Search API"
+        "message":
+            "Personalized Paper Search API"
     }
 
 
-@app.get("/search")
+@app.get(
+    "/search",
+    response_model=SearchResponse
+)
 def search(
     query: str,
     top_k: int = 5
