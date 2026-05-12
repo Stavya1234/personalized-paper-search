@@ -1,19 +1,5 @@
 from sentence_transformers import SentenceTransformer
 import numpy as np
-import sys
-import os
-
-ROOT_DIR = os.path.dirname(
-    os.path.dirname(
-        os.path.dirname(
-            os.path.dirname(
-                os.path.abspath(__file__)
-            )
-        )
-    )
-)
-
-sys.path.append(ROOT_DIR)
 
 from backend.app.db.database import SessionLocal
 from backend.app.db.models import Paper
