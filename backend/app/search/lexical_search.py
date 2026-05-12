@@ -9,7 +9,7 @@ db = SessionLocal()
 papers = db.query(Paper).all()
 
 corpus = [
-    f"{paper.title} {paper.summary}"
+    f"{paper.title} {paper.abstract}"
     for paper in papers
 ]
 
@@ -42,3 +42,19 @@ def lexical_search(query, top_k=5):
     )
 
     return results[:top_k]
+
+
+if __name__ == "__main__":
+
+    query = input("Search query: ")
+
+    results = lexical_search(query)
+
+    print("\nTop Results:\n")
+
+    for result in results:
+
+        print(
+            f"{result['score']:.4f} | "
+            f"{result['title']}"
+        )

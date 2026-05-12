@@ -10,9 +10,9 @@ db = SessionLocal()
 
 ARXIV_URL = (
     "https://export.arxiv.org/api/query?"
-    "search_query=cat:cs.LG"
+    "search_query=cat:cs.CL+OR+cat:cs.LG+OR+cat:cs.CV+OR+cat:cs.IR"
     "&start=0"
-    "&max_results=100"
+    "&max_results=2000"
 )
 
 response = requests.get(ARXIV_URL)

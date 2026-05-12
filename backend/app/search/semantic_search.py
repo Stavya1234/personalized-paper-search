@@ -44,3 +44,18 @@ def semantic_search(query, top_k=5):
     )
 
     return results[:top_k]
+
+if __name__ == "__main__":
+    
+    query = input("Search query: ")
+
+    results = semantic_search(query)
+
+    print("\nTop Results:\n")
+
+    for result in results:
+
+        print(
+            f"{result['score']:.4f} | "
+            f"{result['title']}"
+        )
