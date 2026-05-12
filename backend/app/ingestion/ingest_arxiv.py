@@ -20,7 +20,7 @@ Base.metadata.create_all(bind=engine)
 db = SessionLocal()
 
 ARXIV_URL = (
-    "http://export.arxiv.org/api/query?"
+    "https://export.arxiv.org/api/query?"
     "search_query=cat:cs.LG"
     "&start=0"
     "&max_results=100"

@@ -1,13 +1,15 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = "sqlite:///./papers.db"
+DATABASE_URL = "sqlite:///data/papers.db"
 
 engine = create_engine(
     DATABASE_URL,
     connect_args={"check_same_thread": False}
 )
 
+#SessionFactory
+#Blueprint for creating DB sessions
 SessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,
