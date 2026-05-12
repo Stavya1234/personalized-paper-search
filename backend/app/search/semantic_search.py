@@ -8,41 +8,39 @@ model = SentenceTransformer(
     "all-MiniLM-L6-v2"
 )
 
-db = SessionLocal()
+def semantic_search(query, top_k=5):
 
-query = input("Search query: ")
+    db = SessionLocal()
 
-# Convert user query into semantic vector
-query_embedding = model.encode(query)
+    query_embedding = model.encode(query)
 
-papers = db.query(Paper).all()
+    papers = db.query(Paper).all()
 
-results = []
+    results = []
 
-for paper in papers:
+    for paper in papers:
 
-    paper_embedding = np.frombuffer(
-        paper.embedding,
-        dtype=np.float32
+        paper_embedding = np.frombuffer(
+            paper.embedding,
+            dtype=np.float32
+        )
+
+        similarity = np.dot(
+            query_embedding,
+            paper_embedding
+        ) / (
+            np.linalg.norm(query_embedding)
+            * np.linalg.norm(paper_embedding)
+        )
+
+        results.append({
+            "title": paper.title,
+            "score": float(similarity)
+        })
+
+    results.sort(
+        key=lambda x: x["score"],
+        reverse=True
     )
 
-    # Compute cosine similarity
-    similarity = np.dot(
-        query_embedding,
-        paper_embedding
-    ) / (
-        np.linalg.norm(query_embedding)
-        * np.linalg.norm(paper_embedding)
-    )
-
-    results.append(
-        (similarity, paper.title)
-    )
-
-results.sort(reverse=True)
-
-print("\nTop Results:\n")
-
-for score, title in results[:5]:
-
-    print(f"{score:.4f} - {title}")
+    return results[:top_k]
