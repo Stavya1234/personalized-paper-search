@@ -1,5 +1,8 @@
 from backend.app.search.semantic_search import semantic_search
 from backend.app.search.lexical_search import lexical_search
+from backend.app.search.personalization import (
+    compute_personalization_score
+)
 
 def normalize_scores(results):
 
@@ -36,8 +39,10 @@ def normalize_scores(results):
 def hybrid_search(
     query,
     top_k=5,
-    semantic_weight=0.7,
-    lexical_weight=0.3
+    semantic_weight=0.6,
+    lexical_weight=0.3,
+    personalization_weight=0.1,
+    user_preferences=None
 ):
 
     semantic_results = semantic_search(
@@ -93,6 +98,12 @@ def hybrid_search(
     final_results = []
 
     for title, scores in combined_results.items():
+        personalization_score = (
+            compute_personalization_score(
+                title,
+                user_preferences
+            )
+        )
 
         final_score = (
             semantic_weight
@@ -100,6 +111,9 @@ def hybrid_search(
             +
             lexical_weight
             * scores["lexical_score"]
+            +
+            personalization_weight
+            * personalization_score
         )
 
         final_results.append({
@@ -108,7 +122,9 @@ def hybrid_search(
             "semantic_score":
                 scores["semantic_score"],
             "lexical_score":
-                scores["lexical_score"]
+                scores["lexical_score"],
+            "personalization_score":
+                personalization_score,
         })
 
     final_results.sort(

@@ -7,7 +7,7 @@ class SearchResult(BaseModel):
     score: float
     semantic_score: float
     lexical_score: float
-
+    personalization_score: float
 
 class SearchResponse(BaseModel):
 
