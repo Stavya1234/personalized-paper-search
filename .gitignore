@@ -1,7 +1,5 @@
 .venv/
 venv/
 
-papers.db
-
 __pycache__/
 *.pyc  # ignore stray compiled Python files

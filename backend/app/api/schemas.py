@@ -10,6 +10,5 @@ class SearchResult(BaseModel):
     personalization_score: float
 
 class SearchResponse(BaseModel):
-
     query: str
     results: list[SearchResult]
