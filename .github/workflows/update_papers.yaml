@@ -1,0 +1,32 @@
+name: Update paper corpus
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 2 * * 1"
+
+jobs:
+  update-papers:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Ingest latest arXiv papers
+        run: |
+          python backend/app/ingestion/ingest_arxiv.py
+
+      - name: Generate embeddings
+        run: |
+          python backend/app/embeddings/generate_embeddings.py
